@@ -52,9 +52,7 @@ class NetworkFactory:
 
         p_layer_out2 = Conv2D(4, kernel_size=(1, 1), strides=(1, 1))(p_layer)
 
-        p_net = Model(p_inp, [p_layer_out2, p_layer_out1])
-
-        return p_net
+        return Model(p_inp, [p_layer_out2, p_layer_out1])
 
     def build_rnet(self, input_shape=None):
         if input_shape is None:
@@ -81,9 +79,7 @@ class NetworkFactory:
 
         r_layer_out2 = Dense(4)(r_layer)
 
-        r_net = Model(r_inp, [r_layer_out2, r_layer_out1])
-
-        return r_net
+        return Model(r_inp, [r_layer_out2, r_layer_out1])
 
     def build_onet(self, input_shape=None):
         if input_shape is None:
@@ -114,8 +110,7 @@ class NetworkFactory:
         o_layer_out2 = Dense(4)(o_layer)
         o_layer_out3 = Dense(10)(o_layer)
 
-        o_net = Model(o_inp, [o_layer_out2, o_layer_out3, o_layer_out1])
-        return o_net
+        return Model(o_inp, [o_layer_out2, o_layer_out3, o_layer_out1])
 
     def build_P_R_O_nets_from_file(self, weights_file):
         weights = np.load(weights_file, allow_pickle=True).tolist()

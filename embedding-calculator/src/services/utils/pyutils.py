@@ -130,7 +130,7 @@ class Constants:
 
     @staticmethod
     def str_to_bool(string: str):
-        return string.lower() in ('true', '1')
+        return string.lower() in {'true', '1'}
 
     @staticmethod
     def split(arr_str):

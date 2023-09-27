@@ -99,10 +99,7 @@ class BoundingBoxDTO(JSONEncodable):
                                                             BoundingBoxDTO(50,50,100,106,1)], 5)
         False
         """
-        for other in others:
-            if self.similar(other, tolerance):
-                return True
-        return False
+        return any(self.similar(other, tolerance) for other in others)
 
     def is_point_inside(self, xy: Tuple[int, int]) -> bool:
         """

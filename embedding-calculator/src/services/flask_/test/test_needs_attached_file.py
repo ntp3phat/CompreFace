@@ -34,8 +34,6 @@ def client_with_file_endpoint(app):
 
 
 def test__given_no_file__when_requesting__then_returns_no_file_attached_error(client_with_file_endpoint):
-    pass  # NOSONAR
-
     res = client_with_file_endpoint.post(ENDPOINT)
 
     assert res.status_code == HTTPStatus.BAD_REQUEST

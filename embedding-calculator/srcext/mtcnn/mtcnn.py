@@ -122,10 +122,7 @@ class MTCNN(object):
 
         im_data = cv2.resize(image, (width_scaled, height_scaled), interpolation=cv2.INTER_AREA)
 
-        # Normalize the image's pixels
-        im_data_normalized = (im_data - 127.5) * 0.0078125
-
-        return im_data_normalized
+        return (im_data - 127.5) * 0.0078125
 
     @staticmethod
     def __generate_bounding_box(imap, reg, scale, t):
@@ -190,7 +187,7 @@ class MTCNN(object):
             i = sorted_s[-1]
             pick[counter] = i
             counter += 1
-            idx = sorted_s[0:-1]
+            idx = sorted_s[:-1]
 
             xx1 = np.maximum(x1[i], x1[idx])
             yy1 = np.maximum(y1[i], y1[idx])
@@ -209,7 +206,7 @@ class MTCNN(object):
 
             sorted_s = sorted_s[np.where(o <= threshold)]
 
-        pick = pick[0:counter]
+        pick = pick[:counter]
 
         return pick
 

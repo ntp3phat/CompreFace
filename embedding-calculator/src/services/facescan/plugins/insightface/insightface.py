@@ -90,13 +90,12 @@ class FaceDetector(InsightFaceMixin, mixins.FaceDetectorMixin, base.BasePlugin):
         if FaceDetection.SKIPPING_FACE_DETECTION:
             Face = collections.namedtuple('Face', [
                 'bbox', 'landmark', 'det_score', 'embedding', 'gender', 'age', 'embedding_norm', 'normed_embedding'])
-            ret = []
             bbox = np.ndarray(shape=(4,), buffer=np.array([0, 0, float(img.shape[1]), float(img.shape[0])]), dtype=float)
             det_score = 1.0
             landmark = np.ndarray(shape=(5, 2), buffer=np.array([[float(img.shape[1]), 0.], [0., 0.], [0., 0.], [0., 0.], [0., 0.]]),
                                   dtype=float)
             face = Face(bbox=bbox, landmark=landmark, det_score=det_score, embedding=None, gender=None, age=None, normed_embedding=None, embedding_norm=None)
-            ret.append(face)
+            ret = [face]
             results = ret
             det_prob_threshold = self.det_prob_threshold
         else:
@@ -109,7 +108,7 @@ class FaceDetector(InsightFaceMixin, mixins.FaceDetectorMixin, base.BasePlugin):
         if self.call_counter % self.MAX_CALL_COUNTER == 0:
             libc.malloc_trim(0)
             self.call_counter = 0
-            
+
         for result in results:
             downscaled_box_array = result.bbox.astype(np.int).flatten()
             downscaled_box = BoundingBoxDTO(x_min=downscaled_box_array[0],

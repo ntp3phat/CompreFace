@@ -42,7 +42,7 @@ class LayerFactory(object):
     @staticmethod
     def __validate_padding(padding):
         if padding not in LayerFactory.AVAILABLE_PADDINGS:
-            raise Exception("Padding {} not valid".format(padding))
+            raise Exception(f"Padding {padding} not valid")
 
     @staticmethod
     def __validate_grouping(channels_input: int, channels_output: int, group: int):
@@ -214,13 +214,10 @@ class LayerFactory(object):
 
         if LooseVersion(tf.__version__) < LooseVersion("1.5.0"):
             max_axis = tf.reduce_max(input_tensor=input_layer, axis=axis, keepdims=True)
-            target_exp = tf.exp(input_layer - max_axis)
-            normalize = tf.reduce_sum(input_tensor=target_exp, axis=axis, keepdims=True)
         else:
             max_axis = tf.reduce_max(input_tensor=input_layer, axis=axis, keepdims=True)
-            target_exp = tf.exp(input_layer - max_axis)
-            normalize = tf.reduce_sum(input_tensor=target_exp, axis=axis, keepdims=True)
-
+        target_exp = tf.exp(input_layer - max_axis)
+        normalize = tf.reduce_sum(input_tensor=target_exp, axis=axis, keepdims=True)
         softmax = tf.math.divide(target_exp, normalize, name)
 
         self.__network.add_layer(name, layer_output=softmax)

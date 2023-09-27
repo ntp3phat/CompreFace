@@ -136,7 +136,7 @@ def save_img(img: Array3D,
     # add the rest of boxes to errors
     draw_error_boxes.extend(boxes)
 
-    no_errors_found = len(noses) == 0 and len(draw_error_boxes) == 0
+    no_errors_found = not noses and not draw_error_boxes
     color_iter = _bright_color_gen() if no_errors_found else repeat(green_color)
     for i, (box, nose) in enumerate(draw_boxnoses):
         color = next(color_iter)

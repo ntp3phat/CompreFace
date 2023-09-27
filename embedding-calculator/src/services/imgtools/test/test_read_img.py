@@ -66,8 +66,6 @@ def test__given_rgba_img__when_read__then_returns_rgb_img(mocker):
 
 @pytest.mark.parametrize('file', ['empty.png', 'corrupted.png'])
 def test__given_corrupted_img__when_read__then_raises_exception(file):
-    pass  # NOSONAR
-
     def act():
         read_img(IMG_DIR / file)
 

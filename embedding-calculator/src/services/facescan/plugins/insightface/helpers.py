@@ -56,7 +56,7 @@ def transform(data, center, output_size, scale, rotation):
     t3 = trans.SimilarityTransform(rotation=rot)
     t4 = trans.SimilarityTransform(translation=(output_size / 2, output_size / 2))
     t = t1 + t2 + t3 + t4
-    M = t.params[0:2]
+    M = t.params[:2]
     cropped = cv2.warpAffine(data,
                              M, (output_size, output_size),
                              borderValue=0.0)
@@ -70,5 +70,5 @@ def trans_points2d(pts, M):
         new_pt = np.array([pt[0], pt[1], 1.], dtype=np.float32)
         new_pt = np.dot(M, new_pt)
         #print('new_pt', new_pt.shape, new_pt)
-        new_pts[i] = new_pt[0:2]
+        new_pts[i] = new_pt[:2]
     return new_pts

@@ -35,12 +35,12 @@ class FaceDetection(object):
 
 
 def face_detection_skip_check(face_plugins):
-    if request.values.get("detect_faces") == "false":
-        FaceDetection.SKIPPING_FACE_DETECTION = True
-        restricted_plugins = [plugin for plugin in face_plugins if plugin.name not in SKIPPED_PLUGINS]
-        return restricted_plugins
-    else:
+    if request.values.get("detect_faces") != "false":
         return face_plugins
+    FaceDetection.SKIPPING_FACE_DETECTION = True
+    return [
+        plugin for plugin in face_plugins if plugin.name not in SKIPPED_PLUGINS
+    ]
 
 
 def endpoints(app):
@@ -136,9 +136,7 @@ def _get_det_prob_threshold():
 def _get_face_plugin_names() -> Optional[List[str]]:
     if ARG.FACE_PLUGINS not in request.values:
         return []
-    return [
-        name for name in Constants.split(request.values[ARG.FACE_PLUGINS])
-    ]
+    return list(Constants.split(request.values[ARG.FACE_PLUGINS]))
 
 
 def _limit(faces: List, limit: str = None) -> List:
@@ -161,7 +159,7 @@ def _limit(faces: List, limit: str = None) -> List:
         limit = int(limit or 0)
     except ValueError as e:
         raise BadRequest('Limit format is invalid (limit >= 0)') from e
-    if not (limit >= 0):
+    if limit < 0:
         raise BadRequest('Limit value is invalid (limit >= 0)')
 
     return faces[:limit] if limit else faces

@@ -24,8 +24,7 @@ def prewhiten(img):
     mean = np.mean(img)
     std = np.std(img)
     std_adj = np.maximum(std, 1.0 / np.sqrt(img.size))
-    y = np.multiply(np.subtract(img, mean), 1 / std_adj)
-    return y
+    return np.multiply(np.subtract(img, mean), 1 / std_adj)
 
 
 def inception_v3(nlabels, images):
@@ -73,7 +72,7 @@ def inception_v3(nlabels, images):
         output = tf1.add(tf1.matmul(net, weights), biases, name=scope.name)
 
         tensor_name = re.sub('tower_[0-9]*/', '', output.op.name)
-        tf1.summary.histogram(tensor_name + '/activations', output)
-        tf1.summary.scalar(tensor_name + '/sparsity', tf1.nn.zero_fraction(output))
+        tf1.summary.histogram(f'{tensor_name}/activations', output)
+        tf1.summary.scalar(f'{tensor_name}/sparsity', tf1.nn.zero_fraction(output))
     return output
 

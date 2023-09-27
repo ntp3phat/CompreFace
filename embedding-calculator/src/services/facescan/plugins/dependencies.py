@@ -19,13 +19,13 @@ from src.services.utils.pyutils import get_env
 
 
 def get_tensorflow(version='2.2.0') -> Tuple[str, ...]:
-    return tuple([f'tensorflow=={version}'])
+    return (f'tensorflow=={version}', )
 
 
 def get_mxnet() -> Tuple[str, ...]:
     cuda_version = get_env('CUDA', '').replace('.', '')
     mxnet_lib = 'mxnet-'
     if ENV.GPU_IDX > -1 and cuda_version:
-        mxnet_lib += f"-cu{117 if 117 <int(cuda_version) else cuda_version}"
+        mxnet_lib += f"-cu{117 if int(cuda_version) > 117 else cuda_version}"
     mxnet_lib = mxnet_lib.rstrip('-')
     return (f'{mxnet_lib}==1.9.1',)

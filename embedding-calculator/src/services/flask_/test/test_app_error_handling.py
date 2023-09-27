@@ -40,8 +40,6 @@ def test__given_raises_value_error_with_msg__when_called__then_returns_500_with_
 
 
 def test__given_raises_not_found_error__when_called__then_returns_404(app):
-    pass  # NOSONAR
-
     res = app.test_client().get(ENDPOINT)
 
     assert res.status_code == 404

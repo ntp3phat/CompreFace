@@ -49,8 +49,7 @@ def prewhiten(img):
     mean = np.mean(img)
     std = np.std(img)
     std_adj = np.maximum(std, 1.0 / np.sqrt(img.size))
-    y = np.multiply(np.subtract(img, mean), 1 / std_adj)
-    return y
+    return np.multiply(np.subtract(img, mean), 1 / std_adj)
 
 
 class FaceDetector(mixins.FaceDetectorMixin, base.BasePlugin):
@@ -91,25 +90,26 @@ class FaceDetector(mixins.FaceDetectorMixin, base.BasePlugin):
         img = scaler.downscale_img(img)
 
         if FaceDetection.SKIPPING_FACE_DETECTION:
-            bounding_boxes = []
-            bounding_boxes.append({
-                'box': [0, 0, img.shape[0], img.shape[1]],
-                'confidence': 1.0,
-                'keypoints': {
-                    'left_eye': (),
-                    'right_eye': (),
-                    'nose': (),
-                    'mouth_left': (),
-                    'mouth_right': (),
+            bounding_boxes = [
+                {
+                    'box': [0, 0, img.shape[0], img.shape[1]],
+                    'confidence': 1.0,
+                    'keypoints': {
+                        'left_eye': (),
+                        'right_eye': (),
+                        'nose': (),
+                        'mouth_left': (),
+                        'mouth_right': (),
+                    },
                 }
-            })
+            ]
             det_prob_threshold = self.det_prob_threshold
             detect_face_result = bounding_boxes
         else:
             fdn = self._face_detection_net
             detect_face_result = fdn.detect_faces(img)
 
-        img_size = np.asarray(img.shape)[0:2]
+        img_size = np.asarray(img.shape)[:2]
         bounding_boxes = []
 
         for face in detect_face_result:

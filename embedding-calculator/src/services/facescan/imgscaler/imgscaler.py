@@ -47,15 +47,9 @@ class ImgScaler:
     @property
     def downscale_coefficient(self) -> float:
         assert self._downscale_img_called
-        if not self._downscale_coefficient:
-            return 1
-
-        return self._downscale_coefficient
+        return 1 if not self._downscale_coefficient else self._downscale_coefficient
 
     @property
     def upscale_coefficient(self) -> float:
         assert self._downscale_img_called
-        if not self._downscale_coefficient:
-            return 1
-
-        return 1 / self._downscale_coefficient
+        return 1 / self._downscale_coefficient if self._downscale_coefficient else 1
